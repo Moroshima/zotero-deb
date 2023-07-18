@@ -56,9 +56,10 @@ fi
 # 编译来源为源码
 CHANNEL="source"
 
-# $ZOTERO_SOURCE_DIR 定义于 config.sh 中，为 REPORT_DIR/zotero-build，不属于本项目仓库，而是 zotero-build 项目仓库
+# $ZOTERO_BUILD_DIR 定义于 config.sh 中，为 REPORT_DIR/zotero-build，不属于本项目仓库，而是 zotero-build 项目仓库
 VERSION=$(perl -ne 'print and last if s/.*<em:version>(.{3}).+/\1/;' "$ZOTERO_SOURCE_DIR/install.rdf")
 if [ $VERSION = "4.0" ]; then
+  # 4.0 也是按照两步走打包的？？？
 	"$ZOTERO_BUILD_DIR/xpi/build_xpi_4.0" "$ZOTERO_SOURCE_DIR" $CHANNEL
 	"$ROOT_DIR/build.sh" -f "$ZOTERO_BUILD_DIR/xpi/build/zotero-build.xpi" -p $PLATFORM -c $CHANNEL -s
 else
@@ -69,7 +70,8 @@ else
 
 	hash=$(git -C "$ZOTERO_SOURCE_DIR" rev-parse --short HEAD)
 
-	# XPI: Cross-Platform Install
+	# 为何此处调用构建插件的脚本对源码目录下的构建产物做二次编译
+	# zotero 本质是一个运行在浏览器里的插件，这一部将产物直接经由 build_xpi 脚本打包成 xpi 文件
 	"$ZOTERO_BUILD_DIR/xpi/build_xpi" -s "$ZOTERO_SOURCE_DIR/build" -c $CHANNEL -m $hash
-	"$ROOT_DIR/build.sh" -d "$ZOTERO_BUILD_DIR/xpi/build/staging" -p $PLATFORM -c $CHANNEL -s $PARAMS
+	"$ROOT_DIR/build.sh" -d "$ZOTERO_BUILD_DIR/xpi/build/staging" -p $PLATFORM -c $CHANNEL -s $PARAMS  # 这一步就整合插件打包完整客户端了
 fi

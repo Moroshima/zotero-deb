@@ -3,8 +3,11 @@
 srcdir=$(pwd)
 
 git clone https://github.com/zotero/zotero.git zotero-client
+
 git clone https://github.com/zotero/zotero-build.git zotero-build
 git clone https://github.com/zotero/zotero-standalone-build.git zotero-standalone-build
+
+# zotero-client submodule
 git clone https://github.com/zotero/translators.git zotero-translators
 git clone https://github.com/zotero/bundled-styles.git zotero-styles
 git clone https://github.com/zotero/pdf-worker.git zotero-pdf-worker
@@ -15,8 +18,11 @@ git clone https://github.com/gildas-lormeau/SingleFile.git zotero-SingleFile
 git clone https://github.com/zotero/utilities.git zotero-utilities
 git clone https://github.com/zotero/translate.git zotero-translate
 git clone https://github.com/citation-style-language/locales.git zotero-csl
+
 git clone https://github.com/egh/zotero-transfw.git zotero-transfw
 git clone https://github.com/zotero/zotero-libreoffice-integration.git zotero-libreoffice-integration
+
+
 git clone https://github.com/zotero/pdf.js.git zotero-pdf-js
 
 cd "$srcdir/zotero-build"
@@ -59,11 +65,11 @@ git submodule init
 git config submodule.modules/zotero-libreoffice-integration.url "$srcdir/zotero-libreoffice-integration"
 git -c protocol.file.allow=always submodule update
 
-./fetch_xulrunner.sh -p l
-./fetch_pdftools
+./fetch_xulrunner.sh -p l  # 构建 gecko/xulrunner
+./fetch_pdftools  # 直接从 amazon s3 拉取并解压了 pdftools tar.gz，这是什么，有何用途？
 
 cd "$srcdir/zotero-client"
-NODE_OPTIONS=--openssl-legacy-provider npm run build
+NODE_OPTIONS=--openssl-legacy-provider npm run build  # 构建出可供打包为 xpi 的 zotero client 文件
 
 cd "$srcdir/zotero-standalone-build"
 scripts/dir_build -p l
