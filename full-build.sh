@@ -66,7 +66,7 @@ git config submodule.modules/zotero-libreoffice-integration.url "$srcdir/zotero-
 git -c protocol.file.allow=always submodule update
 
 ./fetch_xulrunner.sh -p l  # 构建 gecko/xulrunner
-./fetch_pdftools  # 直接从 amazon s3 拉取并解压了 pdftools tar.gz，这是什么，有何用途？
+./fetch_pdftools  # 直接从 amazon s3 拉取并解压了 pdftools tar.gz，还是浏览器插件，但是应该是嵌入/配合 zotero client 这一插件使用的
 
 cd "$srcdir/zotero-client"
 NODE_OPTIONS=--openssl-legacy-provider npm run build  # 构建出可供打包为 xpi 的 zotero client 文件
