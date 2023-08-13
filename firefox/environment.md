@@ -1,6 +1,6 @@
 # environment
 
-## debian trixie
+## debian trixie/sid
 
 - clang 14.0.6
 - gcc/g++ 13.2.0-2
@@ -14,14 +14,14 @@
 - rustc 1.32.0
 - llvm 1:7.0-47
 
-## ubunut
+## ubuntu bionic
 
 - clang 6.0.0-1ubuntu2
 - gcc/g++ 7.5.0-3ubuntu1~18.04
 - rustc 1.32.0
 - llvm 1:6.0-41~exp5~ubuntu1
 
-## error message on debian trixie
+## error message on debian trixie/sid
 
 ```
  0:02.14    Compiling style v0.0.1 (/home/moroshima/firefox-60.9.0/servo/components/style)
