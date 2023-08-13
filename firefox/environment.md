@@ -19,7 +19,7 @@
 - clang 6.0.0-1ubuntu2
 - gcc/g++ 7.5.0-3ubuntu1~18.04
 - rustc 1.32.0
-- llvm 1:6.0-41~exp5~ubuntu1
+- llvm 1:6.0-41\~exp5\~ubuntu1
 
 ## error message on debian trixie/sid
 
