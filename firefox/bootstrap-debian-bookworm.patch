@@ -1,0 +1,21 @@
+--- a/firefox-60.9.0/python/mozboot/mozboot/debian.py
++++ b/firefox-60.9.0/python/mozboot/mozboot/debian.py
+# DP: Remove unsupported python packages on debian bookworm or later versions
+@@ -36,9 +36,6 @@ class DebianBootstrapper(StyloInstall, B
+         'build-essential',
+         'ccache',
+         'nodejs',
+-        'python-dev',
+-        'python-pip',
+-        'python-setuptools',
+         'unzip',
+         'uuid',
+         'zip',
+@@ -66,7 +63,6 @@ class DebianBootstrapper(StyloInstall, B
+         'libpulse-dev',
+         'libx11-xcb-dev',
+         'libxt-dev',
+-        'python-dbus',
+         'xvfb',
+         'yasm',
+     ]

@@ -8,7 +8,7 @@ tar -xvf firefox-60.9.0esr.source.tar.xz
 
 apt install llvm clang
 
-cd firefox-60.9.0
+cd firefox-60.9.0 || exit
 
 ./mach bootstrap
 
