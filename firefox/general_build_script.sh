@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 ## Clone code repo use mercurial
 #hg clone --config ui.clonebundles=false https://hg.mozilla.org/releases/mozilla-esr60/

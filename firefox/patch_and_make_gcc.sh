@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 mkdir gcc-8
 cd gcc-8 || exit
@@ -10,7 +11,7 @@ tar -xvf gcc-8.3.0.tar.xz
 mv "$srcdir/gcc-8.3.0/" "$srcdir/gcc/"
 
 git clone https://github.com/gentoo/gcc-patches/
-cp $srcdir/gcc-patches/8.3.0/gentoo/*.patch $srcdir/
+cp $srcdir/gcc-patches/8.3.0/gentoo/* $srcdir/
 
 list=(
   "01_all_default-fortify-source.patch"

@@ -1,4 +1,7 @@
 #!/bin/bash
+set -euo pipefail
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # Install python2
 wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz
@@ -18,10 +21,10 @@ tar -vxf firefox-60.9.0esr.source.tar.xz
 pip3 install --user MozPhab --break-system-packages
 
 cd firefox-60.9.0
-./mach bootstrap
+#./mach bootstrap
 
-rustup install 1.32.0
-rustup default 1.32.0
+#rustup install 1.32.0
+#rustup default 1.32.0
 
 # Install build deps
 sudo apt install libgtk2.0-dev libgtk-3-dev libgconf2-dev libdbus-glib-1-dev yasm libpulse-dev libxt-dev libpango1.0-dev libx11-dev libx11-xcb-dev
