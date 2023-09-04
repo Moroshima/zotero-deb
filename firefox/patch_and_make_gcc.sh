@@ -60,7 +60,9 @@ done
 
 mkdir -p "$srcdir/gcc-build"
 cd "$srcdir/gcc-build" || exit
-"$srcdir/gcc/configure" --enable-checking=release --enable-language=c,c++ --disable-multilib
 
 sudo apt install libgmp-dev libmpfr-dev libmpc-dev
+
+"$srcdir/gcc/configure" --enable-checking=release --enable-language=c,c++ --disable-multilib
+
 sudo LD_PRELOAD='/usr/lib/x86_64-linux-gnu/libstdc++.so.6' make -j"$(nproc)"
