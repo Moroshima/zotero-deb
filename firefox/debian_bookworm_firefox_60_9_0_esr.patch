@@ -1,0 +1,59 @@
+diff -rpuN ./firefox-60.9.0/security/sandbox/linux/launch/SandboxLaunch.cpp ./firefox-60.9.0-source/security/sandbox/linux/launch/SandboxLaunch.cpp
+--- ./firefox-60.9.0/security/sandbox/linux/launch/SandboxLaunch.cpp	2023-09-16 16:27:56.538710834 +0800
++++ ./firefox-60.9.0-source/security/sandbox/linux/launch/SandboxLaunch.cpp	2019-09-01 21:09:56.000000000 +0800
+@@ -417,7 +417,7 @@ static int CloneCallee(void* aPtr) {
+ // we don't currently support sandboxing under valgrind.
+ MOZ_NEVER_INLINE MOZ_ASAN_BLACKLIST static pid_t DoClone(int aFlags,
+                                                          jmp_buf* aCtx) {
+-  uint8_t miniStack[4096] __attribute__((aligned(kStackAlignment)));
++  uint8_t miniStack[PTHREAD_STACK_MIN];
+ #ifdef __hppa__
+   void* stackPtr = miniStack;
+ #else
+diff -rpuN ./firefox-60.9.0/toolkit/crashreporter/breakpad-client/linux/handler/exception_handler.cc ./firefox-60.9.0-source/toolkit/crashreporter/breakpad-client/linux/handler/exception_handler.cc
+--- ./firefox-60.9.0/toolkit/crashreporter/breakpad-client/linux/handler/exception_handler.cc	2023-09-16 16:21:21.398841681 +0800
++++ ./firefox-60.9.0-source/toolkit/crashreporter/breakpad-client/linux/handler/exception_handler.cc	2019-09-01 21:10:19.000000000 +0800
+@@ -144,7 +144,7 @@ void InstallAlternateStackLocked() {
+   // SIGSTKSZ may be too small to prevent the signal handlers from overrunning
+   // the alternative stack. Ensure that the size of the alternative stack is
+   // large enough.
+-  const unsigned kSigStackSize = std::max<unsigned>(16384, SIGSTKSZ);
++  static const unsigned kSigStackSize = std::max(16384, SIGSTKSZ);
+ 
+   // Only set an alternative stack if there isn't already one, or if the current
+   // one is too small.
+diff -rpuN ./firefox-60.9.0/toolkit/crashreporter/client/ping.cpp ./firefox-60.9.0-source/toolkit/crashreporter/client/ping.cpp
+--- ./firefox-60.9.0/toolkit/crashreporter/client/ping.cpp	2023-09-16 16:23:11.198803364 +0800
++++ ./firefox-60.9.0-source/toolkit/crashreporter/client/ping.cpp	2019-09-01 21:10:20.000000000 +0800
+@@ -51,7 +51,7 @@ static string GenerateUUID() {
+ 
+   CFRelease(uuid);
+ #elif defined(HAVE_ARC4RANDOM_BUF)  // Android, BSD, ...
+-  arc4random_buf(&id, sizeof(UUID));
++  arc4random_buf(id, sizeof(UUID));
+ #else                               // Linux
+   int fd = open("/dev/urandom", O_RDONLY);
+ 
+diff -rpuN ./firefox-60.9.0/tools/profiler/core/platform.h ./firefox-60.9.0-source/tools/profiler/core/platform.h
+--- ./firefox-60.9.0/tools/profiler/core/platform.h	2023-09-16 16:19:14.608884547 +0800
++++ ./firefox-60.9.0-source/tools/profiler/core/platform.h	2019-09-01 21:09:48.000000000 +0800
+@@ -42,16 +42,16 @@
+ #include "PlatformMacros.h"
+ #include <vector>
+ 
+-// We need a definition of gettid(), but old glibc versions don't provide a
++// We need a definition of gettid(), but glibc doesn't provide a
+ // wrapper for it.
+ #if defined(__GLIBC__)
+ #include <unistd.h>
+ #include <sys/syscall.h>
+-#define gettid() static_cast<pid_t>(syscall(SYS_gettid))
++static inline pid_t gettid() { return (pid_t)syscall(SYS_gettid); }
+ #elif defined(GP_OS_darwin)
+ #include <unistd.h>
+ #include <sys/syscall.h>
+-#define gettid() static_cast<pid_t>(syscall(SYS_thread_selfid))
++static inline pid_t gettid() { return (pid_t)syscall(SYS_thread_selfid); }
+ #elif defined(GP_OS_android)
+ #include <unistd.h>
+ #elif defined(GP_OS_windows)
